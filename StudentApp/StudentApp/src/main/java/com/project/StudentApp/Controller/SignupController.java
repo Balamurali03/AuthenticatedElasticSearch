@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -30,7 +31,11 @@ private JwtUtility jwtUtility;
 	@PostMapping("/signUp")
 	public String signUp(@RequestBody SignupData signupData)
 	{
-		SignupData sData= signupRepo.save(signupData);
+		
+		SignupData newSignupData=new SignupData();
+		newSignupData.setUserName(signupData.getUserName());
+		newSignupData.setPassword(new BCryptPasswordEncoder().encode(signupData.getPassword()));
+		SignupData sData= signupRepo.save(newSignupData);
 		if(sData!=null)
 		{
 			return "SignedUp Successfull";
