@@ -6,4 +6,5 @@ import com.project.StudentApp.Entity.SignupData;
 
 public interface SignupRepo extends JpaRepository<SignupData,Integer>{
 
+	SignupData findByUserName(String userName);
 }
