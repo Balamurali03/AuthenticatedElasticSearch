@@ -2,9 +2,10 @@ package com.project.StudentApp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,24 +46,13 @@ private JwtUtility jwtUtility;
 	@PostMapping("/login")
 	public JwtResponse login(@RequestHeader String username, @RequestHeader String password) throws Exception
 	{
-		 try {
-			
-	            authenticationManager.authenticate(
-	                    new UsernamePasswordAuthenticationToken(
-	                           username,password
-	                    )
-	            );
-	        } catch (BadCredentialsException e) {
-	        	
-	            throw new Exception("INVALID_CREDENTIALS", e);
+		 Authentication authentication = authenticationManager.
+				 authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	        if (authentication.isAuthenticated()) {
+	        	String token=jwtUtility.generateToken(username);
+	            return new JwtResponse(token);
+	        } else {
+	            throw new UsernameNotFoundException("invalid user request !");
 	        }
-		 final UserDetails userDetails
-         = customDetailsServiceImpl.loadUserByUsername(username);
-		 
-		 final String token =
-	                jwtUtility.generateToken(userDetails);
-		
-
-	        return  new JwtResponse(token);
 	}
 }

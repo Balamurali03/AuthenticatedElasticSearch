@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,7 +21,7 @@ import com.project.StudentApp.Service.CustomDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration  {
+public class SecurityConfiguration {
 	
 	@Autowired
 	private CustomDetailsServiceImpl customDetailsServiceImpl;
@@ -29,16 +30,20 @@ public class SecurityConfiguration  {
 	    private JwtFilter jwtFilter;
 	@Bean
 	 AuthenticationProvider authenticationProvider() {
-		 DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		 provider.setUserDetailsService(customDetailsServiceImpl);
-		 provider.setPasswordEncoder( new BCryptPasswordEncoder());
-		 return provider;
+		 DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		 authenticationProvider.setUserDetailsService(customDetailsServiceImpl);
+		 authenticationProvider.setPasswordEncoder( new BCryptPasswordEncoder());
+		 return authenticationProvider;
 	 }
 	
     @Bean
-    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    	System.out.println("auth");
         return authenticationConfiguration.getAuthenticationManager();
     }
+	
+	
+
 
     @Bean
     public SecurityFilterChain  filterChain(HttpSecurity http) throws Exception {
@@ -59,7 +64,12 @@ public class SecurityConfiguration  {
         .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
       http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
       return http.build();
+    	
        
 
     }
+   
+                
+
+    
 }
