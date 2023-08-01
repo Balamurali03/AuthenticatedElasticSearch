@@ -2,10 +2,7 @@ package com.project.StudentApp.Filter;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +15,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.project.StudentApp.Service.CustomDetailsServiceImpl;
 import com.project.StudentApp.Utility.JwtUtility;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Component
 public class JwtFilter extends OncePerRequestFilter{
@@ -26,10 +28,11 @@ public class JwtFilter extends OncePerRequestFilter{
 	    private JwtUtility jwtUtility;
 	 @Autowired
 	 private CustomDetailsServiceImpl customDetailsServiceImpl;
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		  String authorization = request.getHeader("Authorization");
+		 String authorization = request.getHeader("Authorization");
 	        String token = null;
 	        String userName = null;
 
@@ -56,6 +59,7 @@ public class JwtFilter extends OncePerRequestFilter{
 
 	        }
 	        filterChain.doFilter(request, response);
+	
 		
 	}
 

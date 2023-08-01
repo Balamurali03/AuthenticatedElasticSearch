@@ -42,16 +42,24 @@ public class SecurityConfiguration  {
 
     @Bean
     public SecurityFilterChain  filterChain(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/login","/signUp")
-                .permitAll()
-                .anyRequest()
-                .authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
-                return http.build();
+//        http.csrf(csrf->csrf.disable()).authorizeRequests()
+//                .requestMatchers("/login","/signUp")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated().and().sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//                return http.build();
+    	http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/login","/signUp").permitAll()
+            .anyRequest().authenticated()
+        )
+        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+      http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+      return http.build();
+       
 
     }
 }

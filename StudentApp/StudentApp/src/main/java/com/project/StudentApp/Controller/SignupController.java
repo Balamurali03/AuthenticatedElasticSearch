@@ -46,12 +46,14 @@ private JwtUtility jwtUtility;
 	public JwtResponse login(@RequestHeader String username, @RequestHeader String password) throws Exception
 	{
 		 try {
+			
 	            authenticationManager.authenticate(
 	                    new UsernamePasswordAuthenticationToken(
 	                           username,password
 	                    )
 	            );
 	        } catch (BadCredentialsException e) {
+	        	
 	            throw new Exception("INVALID_CREDENTIALS", e);
 	        }
 		 final UserDetails userDetails
@@ -59,6 +61,7 @@ private JwtUtility jwtUtility;
 		 
 		 final String token =
 	                jwtUtility.generateToken(userDetails);
+		
 
 	        return  new JwtResponse(token);
 	}
