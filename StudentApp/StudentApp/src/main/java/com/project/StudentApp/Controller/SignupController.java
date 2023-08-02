@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.StudentApp.Entity.JwtResponse;
 import com.project.StudentApp.Entity.SignupData;
 import com.project.StudentApp.Repo.SignupRepo;
-import com.project.StudentApp.Service.CustomDetailsServiceImpl;
+//import com.project.StudentApp.Service.CustomDetailsServiceImpl;
 import com.project.StudentApp.Utility.JwtUtility;
 
 @RestController
@@ -25,8 +24,8 @@ public class SignupController {
 	private SignupRepo signupRepo;
 	 @Autowired
 	 private AuthenticationManager authenticationManager;
-@Autowired
-private CustomDetailsServiceImpl customDetailsServiceImpl;
+//@Autowired
+//private CustomDetailsServiceImpl customDetailsServiceImpl;
 @Autowired
 private JwtUtility jwtUtility;
 	@PostMapping("/signUp")

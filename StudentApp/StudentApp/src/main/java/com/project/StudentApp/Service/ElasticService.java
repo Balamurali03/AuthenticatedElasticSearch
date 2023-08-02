@@ -66,8 +66,16 @@ public String deleteAllData() {
 public SearchResponse<ElasticStudentData> searchByValue(String aproxValue) throws IOException {
 	
 	Supplier<Query> supplier= ElasticSearchUtil.createSupplierQuery(aproxValue);
-	SearchResponse<ElasticStudentData> searchResponse= elasticSearchClient.search(s-> s.index("studentData").query(supplier.get()), ElasticStudentData.class);
 	
-	return searchResponse;
+	//try {
+		SearchResponse<ElasticStudentData> searchResponse= elasticSearchClient.search(s-> s.index("studentdata").query(supplier.get()), ElasticStudentData.class);
+		 return searchResponse;
+//	} 
+//	catch (Exception e){
+//		SearchResponse<ElasticStudentData> searchResponse=null;
+//		 return searchResponse;
+//	} 
+	
+	
 }
 }

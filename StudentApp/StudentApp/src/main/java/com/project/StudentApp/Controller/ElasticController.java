@@ -23,7 +23,7 @@ public class ElasticController {
 	@Autowired
 	private ElasticService elasticService;
 
-	@RequestMapping("/load")
+	@RequestMapping("/load-data-from-database")
 	public String loadedData() {
 		return elasticService.loadAllStudentData();
 	}
@@ -37,25 +37,21 @@ public class ElasticController {
 	public String getLoadedData(@PathVariable String aproxValue) throws IOException {
 
 		SearchResponse<ElasticStudentData> searchResponse = elasticService.searchByValue(aproxValue);
+		if (searchResponse.hits().hits().size() > 0) {
+			List<Hit<ElasticStudentData>> listOfHits = searchResponse.hits().hits();
 
-		List<Hit<ElasticStudentData>> listOfHits = searchResponse.hits().hits();
+			List<ElasticStudentData> listOfStudentData = new ArrayList<ElasticStudentData>();
 
-		List<ElasticStudentData> listOfStudentData = new ArrayList<ElasticStudentData>();
-		
-		if(listOfHits !=null) {
 			for (Hit<ElasticStudentData> hit : listOfHits) {
 				listOfStudentData.add(hit.source());
 			}
-			
+
 			return listOfStudentData.toString();
-		}  else {
-			
-			return "Data is Not Loaded";
+		} else {
+
+			return "NO DATA PRESENT IN THE ELASTIC SEARCH !!!! ADD OR LOAD THE DATA FIRST !!!!";
 		}
-		 
-		
-		 
-		
+
 	}
 
 }

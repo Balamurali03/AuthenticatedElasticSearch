@@ -21,48 +21,48 @@ public class StudentController {
 	@Autowired
 	StudentDataService studentDataService;
 
-	@GetMapping("/get")
+	@GetMapping("/get-all-student-data")
 	public ResponseEntity<List<StudentData>> getAll()
 	{
 		List<StudentData> student=studentDataService.getAll();
 		return ResponseEntity.status(200).body(student);
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/save-student-data")
 	public ResponseEntity<?> add(@RequestBody StudentData student )
 	{
 		boolean value=studentDataService.add(student);
 		
 		if(value)
 		{
-			return ResponseEntity.status(200).body("added");
+			return ResponseEntity.status(200).body("Student data added sucessfully");
 		}
-		return ResponseEntity.status(400).body("not added");
+		return ResponseEntity.status(400).body("Student data not added sucessfully");
 		
 	}
-	@PatchMapping("/update/{id}")
+	@PatchMapping("/update-student-data/{id}")
 	public ResponseEntity<?> update(@PathVariable int id ,@RequestBody StudentData student)
 	{
 		boolean value=studentDataService.update(id, student);
 		
 		if(value)
 		{
-			return ResponseEntity.status(200).body("updated");
+			return ResponseEntity.status(200).body("Student data updated sucessfully");
 		}
-		return ResponseEntity.status(400).body("not updated");
+		return ResponseEntity.status(400).body("Student data not updated sucessfully");
 		
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/delete-student-data/{id}")
 	public ResponseEntity<?> delete(@PathVariable int id )
 	{
 		boolean value=studentDataService.delete(id);
 		
 		if(value)
 		{
-			return ResponseEntity.status(200).body("deleted");
+			return ResponseEntity.status(200).body("Student data deleted sucessfully");
 		}
-		return ResponseEntity.status(400).body("not deleted");
+		return ResponseEntity.status(400).body("Student data not deleted sucessfully");
 		
 	}
 }
