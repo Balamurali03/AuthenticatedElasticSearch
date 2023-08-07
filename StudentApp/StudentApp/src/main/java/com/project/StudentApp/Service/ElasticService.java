@@ -67,15 +67,19 @@ public SearchResponse<ElasticStudentData> searchByValue(String aproxValue) throw
 	
 	Supplier<Query> supplier= ElasticSearchUtil.createSupplierQuery(aproxValue);
 	
-	//try {
+	
 		SearchResponse<ElasticStudentData> searchResponse= elasticSearchClient.search(s-> s.index("studentdata").query(supplier.get()), ElasticStudentData.class);
 		 return searchResponse;
-//	} 
-//	catch (Exception e){
-//		SearchResponse<ElasticStudentData> searchResponse=null;
-//		 return searchResponse;
-//	} 
-	
-	
+
 }
+public SearchResponse<ElasticStudentData> matchByValue(String aproxValue) throws IOException {
+	
+	Supplier<Query> supplier= ElasticSearchUtil.createSupplierMatchQuery(aproxValue);
+	
+	
+		SearchResponse<ElasticStudentData> searchResponse= elasticSearchClient.search(s-> s.index("studentdata").query(supplier.get()), ElasticStudentData.class);
+		 return searchResponse;
+
+}
+
 }

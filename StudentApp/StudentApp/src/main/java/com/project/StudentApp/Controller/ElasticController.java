@@ -53,5 +53,26 @@ public class ElasticController {
 		}
 
 	}
+	
+	@GetMapping("/get-matched-data/{aproxValue}")
+	public List<String> getMatchedData(@PathVariable String aproxValue) throws IOException {
+
+		SearchResponse<ElasticStudentData> searchResponse = elasticService.matchByValue(aproxValue);
+		
+			List<Hit<ElasticStudentData>> listOfHits = searchResponse.hits().hits();
+
+			List<ElasticStudentData> listOfStudentData = new ArrayList<ElasticStudentData>();
+
+			for (Hit<ElasticStudentData> hit : listOfHits) {
+				listOfStudentData.add(hit.source());
+			}
+			List<String> listOfStudentNames = new ArrayList<String>();
+			for(ElasticStudentData data : listOfStudentData) {
+				listOfStudentNames.add(data.getName());
+			}
+
+			return listOfStudentNames;
+		
+	}
 
 }
